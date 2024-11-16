@@ -8,7 +8,7 @@ public class ARogueLikeDemo : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput","Niagara","GameplayTags","AIModule" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput","Niagara","GameplayTags","AIModule","OnlineSubsystem", "DeveloperSettings" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "EnhancedInput" });
 
