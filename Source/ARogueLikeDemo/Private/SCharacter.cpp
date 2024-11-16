@@ -119,9 +119,7 @@ void ASCharacter::Action_PrimaryAttack()
 
 void ASCharacter::Action_PrimaryInteract()
 {
-	static FGameplayTag ActivationTag = FGameplayTag::RequestGameplayTag("Action.PrimaryAttack");
-
-	ActionComp->StartActionByName(this,ActivationTag);
+	
 }
 
 void ASCharacter::Action_BlackHoleAttack()
