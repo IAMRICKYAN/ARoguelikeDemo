@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "SAttributeComponent.h"
 #include "SharedGameplayTags.h"
+#include "SInteractionComponent.h"
 #include "Actions/SActionComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -119,7 +120,10 @@ void ASCharacter::Action_PrimaryAttack()
 
 void ASCharacter::Action_PrimaryInteract()
 {
-	
+	if(InteractionComp)
+	{
+		InteractionComp->Interact();
+	}
 }
 
 void ASCharacter::Action_BlackHoleAttack()

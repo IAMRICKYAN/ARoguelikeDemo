@@ -9,8 +9,7 @@
 #include "SCharacter.generated.h"
 
 
-
-
+class USInteractionComponent;
 class USActionComponent;
 class USAttributeComponent;
 class UCameraComponent;
@@ -43,8 +42,8 @@ UPROPERTY(VisibleAnywhere,Category = "Components" )
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<USActionComponent> ActionComp;
 
-	/*UPROPERTY(VisibleAnywhere,Category = "Components")
-	TObjectPtr<USInteractionComponent> InteractionComp;*/
+	UPROPERTY(VisibleAnywhere,Category = "Components")
+	TObjectPtr<USInteractionComponent> InteractionComp;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Components")
 	TObjectPtr<USAttributeComponent> AttributeComp;
