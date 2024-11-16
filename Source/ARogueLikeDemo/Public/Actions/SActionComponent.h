@@ -7,6 +7,8 @@
 #include "Components/ActorComponent.h"
 #include "SActionComponent.generated.h"
 
+
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnActionStateChanged, USActionComponent*, OwningComp, USAction*, Action);
 
 

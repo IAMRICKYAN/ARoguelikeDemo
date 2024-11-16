@@ -7,6 +7,9 @@
 #include "SGameplayFunctionLibrary.h"
 #include "Actions/SActionComponent.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(SActionEffect_Thorns)
+
+
 USActionEffect_Thorns::USActionEffect_Thorns()
 {
 	ReflectFraction = 0.2f;

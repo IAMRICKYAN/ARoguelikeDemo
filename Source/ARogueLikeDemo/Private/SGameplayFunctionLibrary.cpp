@@ -4,6 +4,9 @@
 #include "SGameplayFunctionLibrary.h"
 #include "SAttributeComponent.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(SGameplayFunctionLibrary)
+
+
 class USAttributeComponent;
 
 bool USGameplayFunctionLibrary::ApplyDamage(AActor* DamageCauser, AActor* TargetActor, float DamageAmount)

@@ -6,6 +6,9 @@
 #include "Actions/SActionComponent.h"
 #include "Net/UnrealNetwork.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(SAction)
+
+
 void USAction::StartAction_Implementation(AActor* Instigator)
 {
 	//UE_LOG(LogTemp, Log, TEXT("Started %s"), *GetNameSafe(this));

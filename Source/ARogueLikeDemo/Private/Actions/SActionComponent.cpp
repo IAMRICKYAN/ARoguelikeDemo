@@ -7,6 +7,9 @@
 #include "Engine/ActorChannel.h"
 #include "Net/UnrealNetwork.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(SActionComponent)
+
+
 // Sets default values for this component's properties
 USActionComponent::USActionComponent()
 {
