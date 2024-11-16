@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SGameplayInterface.h"
 #include "GameFramework/Actor.h"
 #include "SItemChest.generated.h"
 
 UCLASS()
-class AROGUELIKEDEMO_API ASItemChest : public AActor
+class AROGUELIKEDEMO_API ASItemChest : public AActor,public ISGameplayInterface
 {
 	GENERATED_BODY()
 	
@@ -15,12 +16,35 @@ public:
 	// Sets default values for this actor's properties
 	ASItemChest();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UFUNCTION()
+	void Interact_Implementation(APawn* InstigatorPawn);
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION()
+	void OnActorLoaded_Implementation();
+	
+	UPROPERTY(EditDefaultsOnly)
+	float TargetPitch;
+
+protected:
+
+	UFUNCTION()
+	void OnRep_LidOpened();
+
+	
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing="OnRep_LidOpened", SaveGame)
+	bool bIsLidOpened;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
+	TObjectPtr<UStaticMeshComponent> BaseMesh;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
+	TObjectPtr<UStaticMeshComponent> LidMesh;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
+	TObjectPtr<UStaticMeshComponent> Treasure;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
+	TObjectPtr<UParticleSystemComponent> VFX;
+	
 
 };

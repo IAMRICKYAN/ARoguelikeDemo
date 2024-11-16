@@ -38,6 +38,8 @@ ASCharacter::ASCharacter()
 	CameraComp=CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
 
+	InteractionComp = CreateDefaultSubobject<USInteractionComponent>(TEXT("InteractionComp"));
+
 	ActionComp=CreateDefaultSubobject<USActionComponent>(TEXT("ActionComp"));
 
 	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComp"));
