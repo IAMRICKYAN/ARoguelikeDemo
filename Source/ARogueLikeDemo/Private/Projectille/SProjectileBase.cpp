@@ -29,7 +29,7 @@ ASProjectileBase::ASProjectileBase()
 	RootComponent = SphereComp;
 
 	ImpactVFX = CreateDefaultSubobject<UParticleSystem>(TEXT("ImpactVFX"));
-	/*ImpactVFX->SetupAttachment(SphereComp);*/
+	
 
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("EffectComp"));
 	EffectComp->SetupAttachment(SphereComp);
