@@ -4,7 +4,11 @@
 #include "ARogueLikeDemo/Public/SCharacter.h"
 
 #include "GameplayTagContainer.h"
+#include "SAttributeComponent.h"
+#include "SharedGameplayTags.h"
+#include "Actions/SActionComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -32,15 +36,21 @@ ASCharacter::ASCharacter()
 
 	CameraComp=CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
+
+	ActionComp=CreateDefaultSubobject<USActionComponent>(TEXT("ActionComp"));
+
+	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComp"));
+
+	TimeToHitParamName = "TimeToHit";
 }
 
 
 void ASCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+	AttributeComp->OnHealthChanged.AddDynamic(this,&ASCharacter::OnHealthChanged);
+	Intime =0.2f;
 }
-
-
 
 // Called to bind functionality to input
 void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -104,26 +114,69 @@ void ASCharacter::Action_PrimaryAttack()
 	//ActionComp->StartActionByName(this,"PrimaryAttack");
 	static FGameplayTag ActivationTag = FGameplayTag::RequestGameplayTag("Action.PrimaryAttack");
 
-	//ActionComp->StartActionByName(this,ActivationTag);
+	ActionComp->StartActionByName(this,ActivationTag);
 }
 
 void ASCharacter::Action_PrimaryInteract()
 {
+	static FGameplayTag ActivationTag = FGameplayTag::RequestGameplayTag("Action.PrimaryAttack");
+
+	ActionComp->StartActionByName(this,ActivationTag);
 }
 
 void ASCharacter::Action_BlackHoleAttack()
 {
+	static FGameplayTag ActivationTag = FGameplayTag::RequestGameplayTag("Action.Blackhole");
+	ActionComp->StartActionByName(this,ActivationTag);
 }
 
 void ASCharacter::Action_Dash()
 {
+	static FGameplayTag ActivationTag = FGameplayTag::RequestGameplayTag("Action.Dash");
+	ActionComp->StartActionByName(this,ActivationTag);
 }
 
 void ASCharacter::Action_SprintStart()
 {
+	ActionComp->StartActionByName(this, SharedGameplayTags::Action_Sprint);
 }
 
 void ASCharacter::Action_SprintStop()
 {
+	ActionComp->StopActionByName(this, SharedGameplayTags::Action_Sprint);
 }
 
+void ASCharacter::HealSelf(float amount)
+{
+	AttributeComp->ApplyHealthChanged(this,amount);
+}
+
+void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth,
+	float Delta)
+{
+	if (Delta < 0.0f)
+	{
+		
+		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
+
+		// Rage added equal to damage received (Abs to turn into positive rage number)
+		float RageDelta = FMath::Abs(Delta);
+		AttributeComp->ApplyRage(InstigatorActor, RageDelta);
+	}
+	
+	if(Delta<0.0f && NewHealth <= 0.0f)
+	{
+			APlayerController* PC = Cast<APlayerController>(GetController());
+
+			DisableInput(PC);
+
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			SetLifeSpan(5.0f);
+		
+	}
+}
+
+UCameraComponent* ASCharacter::GetCameraComponent()
+{
+	return CameraComp;
+}

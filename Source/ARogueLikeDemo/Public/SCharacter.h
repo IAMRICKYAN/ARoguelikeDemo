@@ -9,6 +9,8 @@
 #include "SCharacter.generated.h"
 
 
+class USActionComponent;
+class USAttributeComponent;
 class UCameraComponent;
 class USpringArmComponent;
 
@@ -22,20 +24,28 @@ public:
 	ASCharacter();
 
 protected:
+	
+	FTimerHandle PrimaryAttackTimerHandle;
+
+	float Intime;
+
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName TimeToHitParamName;
+	
 UPROPERTY(VisibleAnywhere,Category = "Components" )
 	TObjectPtr<USpringArmComponent> SpringArmComp;
 
 	UPROPERTY(VisibleAnywhere,Category = "Components")
 	TObjectPtr<UCameraComponent> CameraComp;
 	
-	/*UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	TObjectPtr<USActionComponent> ActionComp;
 
-	UPROPERTY(VisibleAnywhere,Category = "Components")
-	TObjectPtr<USInteractionComponent> InteractionComp;
+	/*UPROPERTY(VisibleAnywhere,Category = "Components")
+	TObjectPtr<USInteractionComponent> InteractionComp;*/
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Components")
-	TObjectPtr<USAttributeComponent> AttributeComp;*/
+	TObjectPtr<USAttributeComponent> AttributeComp;
 
 	//Input System
 	UPROPERTY(EditDefaultsOnly, Category="EnhancedInput")
@@ -87,6 +97,14 @@ UPROPERTY(VisibleAnywhere,Category = "Components" )
 
 	void Action_SprintStop();
 public:
+
+	UFUNCTION(Exec)
+	void HealSelf(float amount = 100);
+	
+	UCameraComponent* GetCameraComponent();
+	
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
