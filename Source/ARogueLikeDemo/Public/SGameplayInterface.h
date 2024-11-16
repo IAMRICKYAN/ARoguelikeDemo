@@ -22,4 +22,13 @@ class AROGUELIKEDEMO_API ISGameplayInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+	void Interact(APawn* InstigatorPawn);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	FText GetInteractText(APawn* InstigatorPawn);
+	
+	/* 在从SaveGame中读取Actor状态之后调用. */
+	UFUNCTION(BlueprintNativeEvent)
+	void OnActorLoaded();
 };

@@ -3,6 +3,14 @@
 
 #include "SAttributeComponent.h"
 
+#include "SGameModeBase.h"
+#include "Net/UnrealNetwork.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(SAttributeComponent)
+
+static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("su.DamageMultiplier"), 1.0f, TEXT("Global Damage Modifier for Attribute Component."), ECVF_Cheat);
+
+
 // Sets default values for this component's properties
 USAttributeComponent::USAttributeComponent()
 {
@@ -10,19 +18,123 @@ USAttributeComponent::USAttributeComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	HealthMax = 300;
+	Health = HealthMax;
+
+	SetIsReplicatedByDefault(true);
 }
 
-
-// Called when the game starts
-void USAttributeComponent::BeginPlay()
+void USAttributeComponent::MulticastHealthChanged_Implementation(AActor* InstigatorActor, float NewHealth, float Delta)
 {
-	Super::BeginPlay();
-
-	// ...
-	
+	OnHealthChanged.Broadcast(InstigatorActor, this, NewHealth, Delta);
 }
 
+void USAttributeComponent::MulticastRageChanged_Implementation(AActor* InstigatorActor, float NewRage, float Delta)
+{
+	OnRageChanged.Broadcast(InstigatorActor, this, NewRage, Delta);
+}
+
+bool USAttributeComponent::ApplyHealthChanged(AActor* InstigatorActor, float Delta)
+{
+	if(Delta < 0.0f)
+	{
+		float DamageMultipier = CVarDamageMultiplier.GetValueOnGameThread();
+
+		Delta *= DamageMultipier;
+	}
+
+	float OldHealth = Health;
+	float NewHealth = FMath::Clamp(Health + Delta, 0.0f, HealthMax);
+
+	float ActualDelta = NewHealth - OldHealth;
+
+	if(GetOwner()->HasAuthority())
+	{
+		Health = NewHealth;
+		
+		if (ActualDelta != 0.0f)
+		{
+			MulticastHealthChanged(InstigatorActor, Health, ActualDelta);
+		}
+
+		if(ActualDelta < 0.0f && Health == 0.0f)
+		{
+			ASGameModeBase* GM = GetWorld()->GetAuthGameMode<ASGameModeBase>();
+			if(GM)
+			{
+				GM->OnActorKilled(GetOwner(), InstigatorActor);
+			}
+		}
+	}
+
+	return ActualDelta != 0;
+}
+
+bool USAttributeComponent::ApplyRage(AActor* InstigatorActor, float Delta)
+{
+	float OldRage = Rage;
+
+	Rage = FMath::Clamp(Rage + Delta, 0.0f, RageMax);
+
+	float ActualDelta = Rage - OldRage;
+	if (ActualDelta != 0.0f)
+	{
+		MulticastRageChanged(InstigatorActor, Rage, ActualDelta);
+	}
+
+	return ActualDelta != 0;
+}
+
+bool USAttributeComponent::IsAlive() const
+{
+	return Health > 0.0f;
+}
+
+bool USAttributeComponent::IsActorAlive(AActor* Actor)
+{
+	TObjectPtr<USAttributeComponent> AttributeComp =GetAttributes(Actor);
+	if(AttributeComp)
+	{
+		return AttributeComp->IsAlive();
+	}
+	
+	return false;
+}
+
+bool USAttributeComponent::IsFullHealth() const
+{
+	return Health >= HealthMax;
+}
+
+float USAttributeComponent::GetHealthMax() const
+{
+	return HealthMax;
+}
+
+float USAttributeComponent::GetHealth() const
+{
+	return Health;
+}
+
+float USAttributeComponent::GetRage() const
+{
+	return Rage;
+}
+
+USAttributeComponent* USAttributeComponent::GetAttributes(AActor* FromActor)
+{
+	if(FromActor)
+	{
+		return FromActor->FindComponentByClass<USAttributeComponent>();
+	}
+	
+	return nullptr;
+}
+
+bool USAttributeComponent::Kill(AActor* InstigatorActor)
+{
+	return ApplyHealthChanged(InstigatorActor,-GetHealthMax());
+}
 
 // Called every frame
 void USAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -32,3 +144,14 @@ void USAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
+void USAttributeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(USAttributeComponent, Health);
+	DOREPLIFETIME(USAttributeComponent, HealthMax);
+	//DOREPLIFETIME_CONDITION(USAttributeComponent, HealthMax, COND_InitialOnly);
+	
+	DOREPLIFETIME(USAttributeComponent, Rage);
+	DOREPLIFETIME(USAttributeComponent, RageMax);
+}

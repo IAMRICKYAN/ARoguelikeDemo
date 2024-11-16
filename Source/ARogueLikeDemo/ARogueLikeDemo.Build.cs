@@ -8,10 +8,19 @@ public class ARogueLikeDemo : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput","Niagara","GameplayTags","AIModule","OnlineSubsystem", "DeveloperSettings" });
+		PublicIncludePaths.AddRange(
+			new string[] {
+				"ARoguelikeDemo"
+			}
+		);
+		
+		//PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput","Niagara","GameplayTags","AIModule","OnlineSubsystem", "DeveloperSettings" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "EnhancedInput" });
+		//PrivateDependencyModuleNames.AddRange(new string[] { "EnhancedInput","OnlineSubsystem","DeveloperSettings","Core", "CoreUObject" });
 
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "EnhancedInput","SignificanceManager","OnlineSubsystem" });
+
+		PrivateDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput","Niagara","GameplayTags","OnlineSubsystem", "DeveloperSettings","Niagara"});
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		
