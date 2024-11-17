@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SSaveGame.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "SSaveGameSubsystem.generated.h"
 
