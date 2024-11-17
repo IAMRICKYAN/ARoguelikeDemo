@@ -108,7 +108,7 @@ protected:
 	TMap<TSubclassOf<AActor>, int32> ActorPoolClasses;
 	
 
-	/*UFUNCTION(Exec)
+	UFUNCTION(Exec)
 	void KillAll();
 
 	UFUNCTION(BlueprintCallable)
@@ -116,17 +116,16 @@ protected:
 	
 	UFUNCTION()
 	void SpawnBotTimerElapsed();
-	*/
 
 	UFUNCTION()
 	void RespawnPlayerElapsed(AController* Controller);
 
-	/*void OnBotSpawnQueryCompleted(TSharedPtr<FEnvQueryResult> Result);
+	void OnBotSpawnQueryCompleted(TSharedPtr<FEnvQueryResult> Result);
 	
 	void OnMonsterLoaded(FPrimaryAssetId LoadedId, FVector SpawnLocation);
 
 	
-	void OnPowerupSpawnQueryCompleted(TSharedPtr<FEnvQueryResult> Result);*/
+	void OnPowerupSpawnQueryCompleted(TSharedPtr<FEnvQueryResult> Result);
 
 public:
 	virtual void OnActorKilled(AActor* VictimActor, AActor* Killer);
@@ -134,6 +133,8 @@ public:
 	void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 
 	void HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer) override;
+
+	virtual void StartPlay() override;
 	
 	ASGameModeBase();
 };
