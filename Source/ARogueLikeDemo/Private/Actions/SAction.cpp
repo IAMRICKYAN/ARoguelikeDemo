@@ -88,6 +88,7 @@ void USAction::OnRep_RepData()
 	}
 }
 
+
 USActionComponent* USAction::GetOwningComponent() const
 {
 	return ActionComp;

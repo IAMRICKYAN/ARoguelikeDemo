@@ -34,6 +34,7 @@ ASItemChest::ASItemChest()
 	//SetReplicates(true);
 	bReplicates = true;
 	
+	
 }
 
 void ASItemChest::Interact_Implementation(APawn* InstigatorPawn)
