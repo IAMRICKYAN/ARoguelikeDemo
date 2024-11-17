@@ -13,4 +13,9 @@ UCLASS()
 class AROGUELIKEDEMO_API USBTTask_StartAction : public UBTTaskNode
 {
 	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, Category = "Action")
+	FGameplayTag ActionName;
+			
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };
