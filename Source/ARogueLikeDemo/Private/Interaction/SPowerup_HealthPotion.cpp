@@ -54,10 +54,10 @@ FText ASPowerup_HealthPotion::GetInteractText_Implementation(APawn* InstigatorPa
 
 	if (AttributeComp && AttributeComp->IsFullHealth())
 	{
-		return LOCTEXT("HealthPotion_FullHealthWarning", "你的血量是满的.");
+		return LOCTEXT("HealthPotion_FullHealthWarning", "Full Health.");
 	}
 
-	return FText::Format(LOCTEXT("HealthPotion_InteractMessage", "花费 {0} 点数. 恢复至满血."), CreditCost);
+	return FText::Format(LOCTEXT("HealthPotion_InteractMessage", "Cost {0} Points. Recover to full health."), CreditCost);
 }
 
 

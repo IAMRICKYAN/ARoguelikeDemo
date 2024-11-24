@@ -43,6 +43,7 @@ bool USSaveGameSubsystem::OverrideSpawnTransform(AController* NewPlayer)
 	{
 		return false;
 	}
+	
 	APlayerState* PS = NewPlayer->GetPlayerState<APlayerState>();
 	if (PS == nullptr)
 	{
