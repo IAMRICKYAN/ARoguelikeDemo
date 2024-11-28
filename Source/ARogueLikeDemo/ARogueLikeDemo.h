@@ -20,6 +20,6 @@ static void LogOnScreen(UObject* WorldContext, FString Msg, FColor Color = FColo
 	FString NetPrefix = World->IsNetMode(NM_Client) ? "[CLIENT] " : "[SERVER] ";
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, Duration, Color, NetPrefix + Msg);
+		//GEngine->AddOnScreenDebugMessage(-1, Duration, Color, NetPrefix + Msg);
 	}
 }

@@ -51,7 +51,7 @@ void USInteractionComponent::FindBestInteractable()
 	ObjectQueryParams.AddObjectTypesToQuery(CollisionChannel);
 
 	TObjectPtr<AActor> MyOwner = GetOwner();
-
+	
 	//这里的EyeLocation并不是摄像机的位置信息，而是角色的位置加上角色定义的高度的位置
 	FVector EyeLocation;
 	FRotator EyeRotation;

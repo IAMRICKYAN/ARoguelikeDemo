@@ -25,9 +25,9 @@ USAction_ProjectileAttack::USAction_ProjectileAttack()
 
 void USAction_ProjectileAttack::StartAction_Implementation(AActor* Instigator)
 {
-
+	
 	Super::StartAction_Implementation(Instigator);
-
+	
 	
 	if(TObjectPtr<ACharacter> Character = Cast<ACharacter>(Instigator))
 	{

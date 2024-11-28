@@ -202,7 +202,7 @@ void ASGameModeBase::SpawnBotTimerElapsed()
 		
 	}
 
-	const float MaxBotCount = 40.0f;
+	const float MaxBotCount = 8.0f;
 
 	UE_LOG(LogTemp, Log, TEXT("Alive Bots %i"), NrOfAliveBots);
 	

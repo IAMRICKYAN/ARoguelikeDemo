@@ -63,7 +63,7 @@ void USActionComponent::AddAction(AActor* Instigator,TSubclassOf<USAction> Actio
 
 	if(!GetOwner()->HasAuthority())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Client attempting to AddAction. [Class: %s]"), *GetNameSafe(ActionClass));
+		//UE_LOG(LogTemp, Warning, TEXT("Client attempting to AddAction. [Class: %s]"), *GetNameSafe(ActionClass));
 		return;
 	}
 	USAction* NewAction = NewObject<USAction>(GetOwner(), ActionClass);
@@ -114,7 +114,7 @@ bool USActionComponent::StartActionByName(AActor* Instigator, FGameplayTag Actio
 			if (!Action->CanStart(Instigator))
 			{
 				FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *ActionName.ToString());
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
+				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
 				continue;
 			}
 			
