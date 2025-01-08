@@ -28,6 +28,7 @@ void USSaveGameSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	//DummyTable->GetAllRows（） // 我们不需要这个表格做任何事情，只是一个内容引用示例
 }
 
+// 当玩家开始时，我们加载其状态
 void USSaveGameSubsystem::HandleStartingNewPlayer(AController* NewPlayer)
 {
 	ASPlayerState* PS = NewPlayer->GetPlayerState<ASPlayerState>();
@@ -37,6 +38,7 @@ void USSaveGameSubsystem::HandleStartingNewPlayer(AController* NewPlayer)
 	}
 }
 
+// 当玩家开始时，我们检查其位置
 bool USSaveGameSubsystem::OverrideSpawnTransform(AController* NewPlayer)
 {
 	if (!IsValid(NewPlayer))
@@ -97,6 +99,7 @@ void USSaveGameSubsystem::WriteSaveGame()
 		ASPlayerState* PS = Cast<ASPlayerState>(GS->PlayerArray[i]);
 		if (PS)
 		{
+			// 保存玩家状态任何状态
 			PS->SavePlayerState(CurrentSaveGame);
 			break; // 此时仅限单人游戏
 		}
@@ -117,6 +120,8 @@ void USSaveGameSubsystem::WriteSaveGame()
 		
 		// 传递数组以填充来自 Actor 的数据
 		FMemoryWriter MemWriter(ActorData.ByteData);
+
+		// 创建一个内存写入器，以写入 Actor 的数据
 		FObjectAndNameAsStringProxyArchive Ar(MemWriter, true);
 		//仅查找使用 UPROPERTY（SaveGame）的变量
 		Ar.ArIsSaveGame = true;

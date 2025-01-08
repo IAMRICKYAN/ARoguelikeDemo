@@ -119,6 +119,7 @@ bool USActionComponent::StartActionByName(AActor* Instigator, FGameplayTag Actio
 			}
 			
 			// Is Client?
+			// 如果是客户端则执行
 			if (!GetOwner()->HasAuthority())
 			{
 				ServerStartAction(Instigator, ActionName);

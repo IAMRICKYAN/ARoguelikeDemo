@@ -37,11 +37,14 @@ ASItemChest::ASItemChest()
 	
 }
 
+//这里的ReplicatedUsing可以这样简单理解：Server的Fired值变化时，Client中会触发函数OnRep_OnFire()，
+//但是在Server需要手动调用OnRep_OnFire()。
+
 void ASItemChest::Interact_Implementation(APawn* InstigatorPawn)
 {
 	ISGameplayInterface::Interact_Implementation(InstigatorPawn);
 	bIsLidOpened = !bIsLidOpened;
-	OnRep_LidOpened();
+	OnRep_LidOpened();  //这就是为什么我们需要手动写这个的原因
 }
 
 void ASItemChest::OnActorLoaded_Implementation()

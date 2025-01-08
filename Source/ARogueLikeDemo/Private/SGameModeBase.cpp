@@ -191,7 +191,7 @@ void ASGameModeBase::SpawnBotTimerElapsed()
 
 	int32 NrOfAliveBots = 0;
 	
-	// TActorRange simplifies the code compared to TActorIterator<T>
+	// TActorRange simplifies the code compared to TActorIterator<T
 	for (ASAICharacter* Bot : TActorRange<ASAICharacter>(GetWorld()))
 	{
 		USAttributeComponent* AttributeComp = Cast<USAttributeComponent>(Bot->GetComponentByClass(USAttributeComponent::StaticClass()));
@@ -333,7 +333,7 @@ void ASGameModeBase::OnBotSpawnQueryCompleted(TSharedPtr<FEnvQueryResult> Result
 		return;
 	}
 	
-	// Retrieve all possible locations that passed the query
+	// 检索通过查询的所有可能位置
 	TArray<FVector> Locations;
 	QueryResult->GetAllAsLocations(Locations);
 	if (Locations.IsValidIndex(0) && MonsterTable)
