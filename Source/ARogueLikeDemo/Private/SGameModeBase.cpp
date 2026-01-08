@@ -41,6 +41,15 @@ ASGameModeBase::ASGameModeBase()
 	bAutoRespawnPlayer = false;
 
 	CooldownTimeBetweenFailures = 8.0f;
+
+	// 程序化地图默认值
+	bGenerateProceduralMap = false;
+	MapWidth = 20;
+	MapHeight = 20;
+	TileSize = 400.0f; // 4米
+	FloorTileClass = nullptr;
+	WallTileClass = nullptr;
+	WFCGenerator = nullptr;
 }
 
 void ASGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
@@ -70,6 +79,59 @@ void ASGameModeBase::StartPlay()
 {
 	Super::StartPlay();
 
+	// 如果需要生成程序化地图，先生成地图
+	if (bGenerateProceduralMap)
+	{
+		if (!WFCGenerator)
+		{
+			WFCGenerator = NewObject<USWFCGenerator>(this);
+		}
+
+		if (WFCGenerator && FloorTileClass && WallTileClass)
+		{
+			bool bSuccess = WFCGenerator->GenerateMap(
+				GetWorld(),
+				MapWidth,
+				MapHeight,
+				TileSize,
+				FloorTileClass,
+				WallTileClass
+			);
+
+			if (bSuccess)
+			{
+				// 地图生成完成后，延迟一帧再放置Actor，确保地图完全生成
+				FTimerHandle TimerHandle_MapGenerated;
+				FTimerDelegate Delegate;
+				Delegate.BindUObject(this, &ASGameModeBase::OnMapGenerationCompleted);
+				GetWorldTimerManager().SetTimer(TimerHandle_MapGenerated, Delegate, 0.1f, false);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("Failed to generate procedural map, proceeding with normal spawn logic"));
+				// 如果地图生成失败，直接执行原有的Actor生成逻辑
+				OnMapGenerationCompleted();
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Procedural map generation enabled but missing required classes. FloorTileClass: %s, WallTileClass: %s"), 
+				FloorTileClass ? *FloorTileClass->GetName() : TEXT("None"),
+				WallTileClass ? *WallTileClass->GetName() : TEXT("None"));
+			// 如果配置不完整，直接执行原有的Actor生成逻辑
+			OnMapGenerationCompleted();
+		}
+	}
+	else
+	{
+		// 不生成地图，直接执行原有的Actor生成逻辑
+		OnMapGenerationCompleted();
+	}
+}
+
+void ASGameModeBase::OnMapGenerationCompleted()
+{
+	// 原有的Actor生成逻辑
 	if (bAutoStartBotSpawning)
 	{
 		StartSpawningBots();
@@ -82,7 +144,6 @@ void ASGameModeBase::StartPlay()
 		FEnvQueryRequest Request(PowerupSpawnQuery, this);
 		Request.Execute(EEnvQueryRunMode::AllMatching, this, &ASGameModeBase::OnPowerupSpawnQueryCompleted);
 	}
-	
 }
 
 
