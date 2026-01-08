@@ -23,9 +23,6 @@ void USSaveGameSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	const USSaveGameSettings* SGSettings = GetDefault<USSaveGameSettings>();
 	//访问默认值从 DefaultGame.ini
 	CurrentSlotName = SGSettings->SaveSlotName;
-	//确保它已加载到内存中。Get（） 仅在之前已在代码中的其他位置加载时解析
-	UDataTable* DummyTable = SGSettings->DummyTablePath.LoadSynchronous();
-	//DummyTable->GetAllRows（） // 我们不需要这个表格做任何事情，只是一个内容引用示例
 }
 
 // 当玩家开始时，我们加载其状态

@@ -19,9 +19,5 @@ public:
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "General")
 	FString SaveSlotName;
 	
-	/*软指针必须转换为asset使用 */
-	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "General", AdvancedDisplay)
-	TSoftObjectPtr<UDataTable> DummyTablePath;
-	
 	USSaveGameSettings();
 };

@@ -28,6 +28,7 @@ FPlayerSaveData* USSaveGame::GetPlayerData(APlayerState* PlayerState)
 		return nullptr;
 	}
 
+	// 下面是如果在Steam中登录的话 根据SteamID进行匹配，我们使用IDE的话是不跑下方逻辑的
 	FUniqueNetIdRepl PlayerID = PlayerState->GetUniqueId();
 	//FString PlayerID = PlayerState->GetUniqueId().ToString();
 	// 迭代数组并通过 PlayerID 进行匹配（例如，Steam 提供的唯一 ID）
