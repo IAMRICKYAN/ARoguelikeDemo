@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "EnvironmentQuery/EnvQuery.h"
 #include "GameFramework/GameModeBase.h"
-#include "Procedural/SWFCGenerator.h"
 #include "SGameModeBase.generated.h"
 
 /**
@@ -81,34 +80,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ruleset")
 	bool bAutoRespawnPlayer;
 
-	/* 是否生成程序化地图 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Procedural Map")
-	bool bGenerateProceduralMap;
-
-	/* 地图宽度（格子数） */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Procedural Map")
-	int32 MapWidth;
-
-	/* 地图高度（格子数） */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Procedural Map")
-	int32 MapHeight;
-
-	/* 每个瓦片的大小（单位：厘米） */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Procedural Map")
-	float TileSize;
-
-	/* Floor瓦片的蓝图类 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Procedural Map")
-	TSubclassOf<AActor> FloorTileClass;
-
-	/* Wall瓦片的蓝图类 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Procedural Map")
-	TSubclassOf<AActor> WallTileClass;
-
-	/* WFC生成器实例 */
-	UPROPERTY()
-	TObjectPtr<USWFCGenerator> WFCGenerator;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Powerups")
 	UEnvQuery* PowerupSpawnQuery;
 
@@ -155,9 +126,6 @@ protected:
 
 	
 	void OnPowerupSpawnQueryCompleted(TSharedPtr<FEnvQueryResult> Result);
-
-	/* 地图生成完成后调用，用于放置Actor */
-	void OnMapGenerationCompleted();
 
 public:
 	virtual void OnActorKilled(AActor* VictimActor, AActor* Killer);
