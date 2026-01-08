@@ -134,7 +134,18 @@ void ASGameModeBase::RespawnPlayerElapsed(AController* Controller)
 {
 	if (ensure(Controller))
 	{
-		Controller->UnPossess();
+		// 获取并销毁旧的Pawn（尸体）
+		if (APawn* OldPawn = Controller->GetPawn())
+		{
+			Controller->UnPossess();
+			// 显式销毁旧的Pawn，避免尸体继续播放动画
+			OldPawn->Destroy();
+		}
+		else
+		{
+			Controller->UnPossess();
+		}
+		
 		RestartPlayer(Controller);
 	}
 }

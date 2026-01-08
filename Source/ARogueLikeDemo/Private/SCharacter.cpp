@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "ARogueLikeDemo/Public/SCharacter.h"
@@ -45,6 +45,8 @@ ASCharacter::ASCharacter()
 	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComp"));
 
 	TimeToHitParamName = "TimeToHit";
+	
+	bIsDead = false;
 }
 
 
@@ -168,15 +170,17 @@ void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent*
 		AttributeComp->ApplyRage(InstigatorActor, RageDelta);
 	}
 	
-	if(Delta<0.0f && NewHealth <= 0.0f)
+	if(Delta<0.0f && NewHealth <= 0.0f && !bIsDead)
 	{
-			APlayerController* PC = Cast<APlayerController>(GetController());
-
-			DisableInput(PC);
-
-			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			SetLifeSpan(5.0f);
+		// 标记为已死亡，防止重复触发
+		bIsDead = true;
 		
+		APlayerController* PC = Cast<APlayerController>(GetController());
+
+		DisableInput(PC);
+
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		SetLifeSpan(5.0f);
 	}
 }
 

@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -32,6 +32,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Effects")
 	FName TimeToHitParamName;
+
+	/* 防止重复触发死亡逻辑 */
+	UPROPERTY()
+	bool bIsDead;
 	
 	UPROPERTY(VisibleAnywhere,Category = "Components" )
 	TObjectPtr<USpringArmComponent> SpringArmComp;
